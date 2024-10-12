@@ -2,6 +2,7 @@
 
 #include <string>
 
+// favor scoped enumerations over unscoped enumerations
 enum class Sex { Male, Female };
 
 class Human
@@ -21,6 +22,6 @@ class Human
     void set_name(std::string value);
     std::string get_sex();
     void print_sex();
-    void set_age(uint8_t value=20); // best practive is to specify the default arguments in header files
+    void set_age(uint8_t value=20); // best practice is to specify the default arguments in header files
     void print_age();
 };

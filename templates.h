@@ -12,8 +12,9 @@ constexpr T sum(T a, T b)
 }
 
 // non-type template parameter. they are primarily used when we need to pass constexpr values to function or class.
+// When "[[nodiscard]]" applied to a function declaration, it tells the compiler to issue a warning if the return value is ignored by the caller.
 template <int a, int b>
-int mul()
+[[nodiscard]] int mul()
 {
   return a * b;
 }

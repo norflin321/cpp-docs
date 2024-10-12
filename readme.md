@@ -1,2 +1,5 @@
 - `clear && clang++ *.cpp -o main && ./main`
 - `clear && clang_cpp *.cpp -o main && ./main`
+- https://www.learncpp.com/
+- https://en.cppreference.com/w/
+- @TODO: https://www.learncpp.com/cpp-tutorial/member-functions-returning-references-to-data-members/

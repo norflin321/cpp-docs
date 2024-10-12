@@ -2,7 +2,6 @@
 #include <fstream>
 
 #include "Human.h"
-#include "Player.h"
 #include "templates.h"
 #include "utils.h"
 
@@ -15,14 +14,14 @@ constexpr int DEFAULT_HUMAN_AGE = sum(20, 5); // expression evaluated at compile
 
 int main()
 {
-  print("-- hello world from cpp --\n");
+  utils::print("-- hello world from cpp --\n");
 
   // memory for this object is allocated on the stack and automatically managed by the compiler, it will be
   // deallocated when the object goes out of the scope of this function
   Human h;
   h.set_name(DEFAULT_HUMAN_NAME);
   string name = h.get_name();
-  print(name);
+  utils::print(name);
   h.print_sex();
 
   const auto age = static_cast<uint8_t>(DEFAULT_HUMAN_AGE); // explisit static cast
@@ -33,7 +32,7 @@ int main()
   std::cout << "readme.md content: ";
   std::ifstream file(README_FILE);
   string line;
-  while (getline(file, line)) print(line);
+  while (getline(file, line)) utils::print(line);
   file.close();
 
   // * Each memory address holds 1 byte (8 bits) of data. A byte is a group of bits that are operated on as a unit.
@@ -63,23 +62,23 @@ int main()
   int &a_ref = a;
   a = 1;
   a_ref = 2;
-  print(a_ref);
+  utils::print(a_ref);
 
   // we can create const reference to a const value, they can be used to access but not modify the referenced value
   const int &b_ref = b;
   // b_ref = 3 // error
-  print(b_ref);
+  utils::print(b_ref);
 
   // const references can also bind to modifiable values, then we can use "aa_ref" to access "a" value, but can not
   // modify it, however we still can modify the value of "a" directly. use it when you need read-only reference
   const int &aa_ref = a;
-  print(aa_ref);
+  utils::print(aa_ref);
 
   // templates examples
-  print(sum<int>(static_cast<int>(d), 10));
-  print(mul<5, 5>());
+  utils::print(sum<int>(static_cast<int>(d), 10));
+  utils::print(mul<5, 5>());
 
-  inc(a); // "a" is passed by reference
+  utils::inc(a); // "a" is passed by reference
   std::cout << "a: " << a << std::endl;
 
   // Why don't we pass everything by reference?
@@ -91,7 +90,7 @@ int main()
   // cheap or expensive to copy, favor pass by reference (or by const reference if you don't need to modify it).
   // - Usually pass fundamental types by value and other types by reference.
   string food = "pizza";
-  print_by_ref(food); // "food" is passed by const reference (no copy, can not be modified)
+  utils::print_by_ref(food); // "food" is passed by const reference (no copy, can not be modified)
 
   // Be careful! the (&) symbol has different meaning depending on context (reference, address-of, bitwise operator).
   // We can use the "address-of" operator (&) to retrieve the address assigned to variable "game". For objects that
@@ -121,12 +120,12 @@ int main()
   // But the pointer itself is not a constant, so we can assign a new address to it
   const int e = 0;
   ptr2 = &e;
-  print(*ptr2);
+  utils::print(*ptr2);
 
   // We can also make a pointer itself constant, so we can not change the address that it holding after initialization
   const int *const ptr3 = &e;
   // ptr3 = &e; // error: can not assign a new address to const pointer
-  print(*ptr3);
+  utils::print(*ptr3);
 
   // The size of a pointer is dependent upon the architecture the executable is compiled for, a 32-bit executable
   // uses 32-bit (4 bytes) memory addresses, with a 64-bit executable a pointer would be 64 bits (8 bytes).
@@ -149,15 +148,23 @@ int main()
   // to determine whether a non-null pointer is pointing to a valid object or dangling (invalid object).
   // - Favor references over pointers unless additional capabilities provided by pointers are needed.
   if (ptr != nullptr) // ("ptr" also could be implicitly converted to Boolean, but not recommended)
-    print("ptr is non-null");
+    utils::print("ptr is non-null");
   else
-    print("ptr is null");
+    utils::print("ptr is null");
 
   // Just like pass by reference, pass by address is fast, and avoids making a copy of the argument object.
   // Prefer pass by reference to pass by address unless you have a specific reason to pass by address.
-  print_by_ptr(&food); // the address is copied to function parameter
+  utils::print_by_ptr(&food); // the address is copied to function parameter
   std::cout << "food: " << food << std::endl;
 
-  print("\n-- end --");
+  Item item { .price = 100, .discount = 0.25f };
+  utils::print(item);
+
+  // (->) works identically to the member selection operator (.) but does an implicit dereference
+  // of the pointer object before selecting the member, which is the same as (*ptr_to_item).price.
+  Item<int, float> *ptr_to_item = &item;
+  utils::print(ptr_to_item->discount);
+
+  utils::print("\n-- end --");
   return EXIT_SUCCESS;
 }

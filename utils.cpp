@@ -1,5 +1,11 @@
 #include <cassert>
+#include <iomanip>
 #include <iostream>
+
+#include "utils.h"
+
+namespace utils
+{
 
 // prefer "std::string_view" over "std::string" when you need a read-only string, especially for function parameters
 void print(std::string_view value)
@@ -11,6 +17,14 @@ void print(std::string_view value)
 void print(int value)
 {
   std::cout << value << std::endl;
+}
+void print(double value)
+{
+  std::cout << std::setprecision(2) << value << std::endl;
+}
+void print(const Item<int, float> &item)
+{
+	utils::print(static_cast<std::string>("the price of my ") + item.name + " is " + std::to_string(item.price) + "$");
 }
 
 // accept an argument by reference (no copy, can be modified)
@@ -38,4 +52,6 @@ void print_by_ptr(std::string *ptr)
   std::cout << ptr << " -> " << *ptr << std::endl;
   *ptr = "hotdog";
   std::cout << ptr << " -> " << *ptr << std::endl;
+}
+
 }
